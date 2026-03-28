@@ -1,0 +1,46 @@
+﻿<Page x:Class="ComfortPractice.Pages.RegistrationPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ComfortPractice.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="500" d:DesignWidth="900"
+      Title="RegistrationPage">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="400"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Text="Регистрация нового пользователя" Grid.Row="0" Grid.Column="1" FontWeight="Bold" FontSize="24" HorizontalAlignment="Center" Margin="0 30 0 20"/>
+        <StackPanel Grid.Row="1" Grid.Column="1">
+            <TextBlock Text="Логин" FontSize="16"/>
+            <TextBox x:Name="LoginBox" Height="40" FontSize="14" Width="380"/>
+            <TextBlock Text="Пароль" FontSize="16" Margin="0 10 0 0"/>
+            <PasswordBox x:Name="PasswordBox" Height="40" FontSize="14" Width="380"/>
+            <TextBlock Text="Подтверждение пароля" FontSize="16" Margin="0 10 0 0" />
+            <PasswordBox x:Name="ConfirmPasswordBox" Height="40" FontSize="14" Width="380"/>
+            <TextBlock Text="Фамилия" FontSize="16" Margin="0 10 0 0"/>
+            <TextBox x:Name="SurnameBox" Height="40" FontSize="14" Width="380"/>
+            <TextBlock Text="Имя" FontSize="16" Margin="0 10 0 0"/>
+            <TextBox x:Name="NameBox" Height="40" FontSize="14" Width="380"/>
+            <TextBlock Text="Отчество" FontSize="16" Margin="0 10 0 0"/>
+            <TextBox x:Name="PatronymicBox" Height="40" FontSize="14" Width="380"/>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 20">
+            <Button x:Name="RegisterBtn" Content="Зарегистрироваться" Background="#355CBD" Foreground="White" Width="200" Height="45" Click="RegisterBtn_Click"/>
+            <Button x:Name="CancelBtn" Content="Назад" Background="White" Foreground="#355CBD" Width="150" Height="45" BorderBrush="#355CBD" BorderThickness="1" Click="CancelBtn_Click"/>
+        </StackPanel>
+    </Grid>
+</Page>

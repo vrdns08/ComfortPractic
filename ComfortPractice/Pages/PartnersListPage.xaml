@@ -1,0 +1,75 @@
+﻿<Page x:Class="ComfortPractice.Pages.PartnersListPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ComfortPractice.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="600" d:DesignWidth="1000"
+      Title="PartnersListPage">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Border Padding="15">
+            <TextBlock Text="Список партнеров" FontSize="28" FontWeight="Bold" HorizontalAlignment="Center"/>
+        </Border>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10"  VerticalAlignment="Center">
+            <TextBlock Text="Поиск:" VerticalAlignment="Center"/>
+            <TextBox x:Name="SearchBox" Width="200" TextChanged="SearchBox_TextChanged" FontSize="20" Height="40"/>
+            <TextBlock Text="Сортировка:" VerticalAlignment="Center" Margin="20 0 0 0"/>
+            <ComboBox x:Name="SortCombo" Width="180" SelectionChanged="SortCombo_SelectionChanged" Height="40">
+                <ComboBoxItem Content="Без сортировки" IsSelected="True"/>
+                <ComboBoxItem Content="По наименованию (А-Я)"/>
+                <ComboBoxItem Content="По наименованию (Я-А)"/>
+                <ComboBoxItem Content="По рейтингу (возрастание)"/>
+                <ComboBoxItem Content="По рейтингу (убывание)"/>
+            </ComboBox>
+        </StackPanel>
+        <ListView x:Name="PartnerLW" Grid.Row="2">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Border BorderBrush="Black" BorderThickness="1" Margin="10">
+                        <Grid Margin="10" Width="700">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding TypeOfBusiness.NameBusiness}"/>
+                                <TextBlock Text=" | "/>
+                                <TextBlock Text="{Binding NamePartner}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="1" Orientation="Horizontal">
+                                <TextBlock Text="{Binding SurnameDirector}"/>
+                                <TextBlock Text=" "/>
+                                <TextBlock Text="{Binding NameDirector}"/>
+                                <TextBlock Text=" "/>
+                                <TextBlock Text="{Binding PatronumicDirector}"/>
+                            </StackPanel>
+                            <TextBlock Grid.Row="2" Text="{Binding Phone}"/>
+                            <TextBlock Grid.Row="3" Text="{Binding Raiting}"/>
+                            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding SizeDiscount}"/>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <StackPanel Orientation="Horizontal" Grid.Row="3" HorizontalAlignment="Center" Margin="10">
+            <Button x:Name="AddBtn" Click="AddBtn_Click">Добавить</Button>
+            <Button x:Name="EditBtn" Click="EditBtn_Click">Изменить</Button>
+            <Button x:Name="DeleteBtn" Click="DeleteBtn_Click">Удалить</Button>
+            <Button x:Name="HistoryBtn" Click="HistoryBtn_Click">История продаж</Button>
+        </StackPanel>
+    </Grid>
+</Page>
