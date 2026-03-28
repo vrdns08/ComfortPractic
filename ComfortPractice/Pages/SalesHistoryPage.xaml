@@ -7,6 +7,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="500" d:DesignWidth="900"
       Title="SalesHistoryPage">
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -14,7 +15,6 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-
         <Border Background="#D2DFFF" Padding="10">
             <StackPanel>
                 <TextBlock x:Name="PartnerNameTb" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center"/>
@@ -30,7 +30,6 @@
             <Button x:Name="FilterBtn" Content="Применить" Click="FilterBtn_Click"/>
             <Button x:Name="ResetBtn" Content="Сбросить" Click="ResetBtn_Click"/>
         </StackPanel>
-
         <ListView x:Name="SalesLW" Grid.Row="2" Margin="10">
             <ListView.View>
                 <GridView>
@@ -42,7 +41,6 @@
                 </GridView>
             </ListView.View>
         </ListView>
-
         <Button x:Name="BackBtn" Grid.Row="3" Content="Назад" Width="100" Height="35" HorizontalAlignment="Center" Margin="10" Click="BackBtn_Click"/>
     </Grid>
 </Page>
