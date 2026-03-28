@@ -14,15 +14,14 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ComfortPractice.Model;
 
+
 namespace ComfortPractice.Pages
 {
-    /// <summary>
-    /// Логика взаимодействия для SalesHistoryPage.xaml
-    /// </summary>
     public partial class SalesHistoryPage : Page
     {
         Partners currentPartner;
         List<SaleHistoryItem> salesHistory;
+
         public SalesHistoryPage(Partners partner)
         {
             InitializeComponent();
@@ -30,49 +29,78 @@ namespace ComfortPractice.Pages
             PartnerNameTb.Text = $"История продаж: {partner.NamePartner}";
             LoadSalesHistory();
         }
+
         private void LoadSalesHistory()
         {
-            var requests = Connection.connect.Request.Where(r => r.Id_partner == currentPartner.Id_partner && r.Id_status == 5).ToList();
-            salesHistory = new List<SaleHistoryItem>();
-            foreach (var request in requests)
+            try
             {
-                var requestDetails = Connection.connect.RequestDetails.Where(rd => rd.Id_request == request.Id_request).ToList();
-                foreach (var rd in requestDetails)
+                var requests = Connection.connect.Request
+                    .Where(r => r.Id_partner == currentPartner.Id_partner && r.Id_status == 5)
+                    .ToList();
+
+                salesHistory = new List<SaleHistoryItem>();
+
+                foreach (var request in requests)
                 {
-                    var product = Connection.connect.Products.FirstOrDefault(p => p.Id_product == rd.Id_product);
-                    if (product != null && product.MinPrice.HasValue && rd.Quantity.HasValue)
+                    var requestDetails = Connection.connect.RequestDetails
+                        .Where(rd => rd.Id_request == request.Id_request)
+                        .ToList();
+
+                    foreach (var rd in requestDetails)
                     {
-                        var statusName = Connection.connect.Status.FirstOrDefault(s => s.Id_status == request.Id_status)?.NameStatus ?? "Неизвестно";
-                        salesHistory.Add(new SaleHistoryItem
+                        var product = Connection.connect.Products.FirstOrDefault(p => p.Id_product == rd.Id_product);
+                        if (product != null && product.MinPrice.HasValue && rd.Quantity.HasValue)
                         {
-                            RequestDate = request.RequestDate ?? DateTime.Now,
-                            ProductName = product.NameProduct ?? "Неизвестно",
-                            Quantity = rd.Quantity.Value,
-                            TotalAmount = rd.Quantity.Value * product.MinPrice.Value,
-                            Status = statusName
-                        });
+                            salesHistory.Add(new SaleHistoryItem
+                            {
+                                RequestDate = request.RequestDate ?? DateTime.Now,
+                                ProductName = product.NameProduct ?? "Неизвестно",
+                                Quantity = rd.Quantity.Value,
+                                TotalAmount = rd.Quantity.Value * product.MinPrice.Value,
+                                Status = "Выполнена"
+                            });
+                        }
                     }
                 }
+
+                decimal totalSum = salesHistory.Sum(s => s.TotalAmount);
+                TotalSalesTb.Text = $"Общая сумма продаж (всего): {totalSum:N2} руб.";
+
+                ApplyFilter();
             }
-            decimal totalSum = salesHistory.Sum(s => s.TotalAmount);
-            TotalSalesTb.Text = $"Общая сумма продаж: {totalSum:N2} руб.";
-            ApplyFilter();
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка загрузки: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
-
-
 
         private void ApplyFilter()
         {
-            var filteredList = salesHistory;
+            if (salesHistory == null || salesHistory.Count == 0)
+            {
+                SalesLW.ItemsSource = null;
+                FilteredTotalTb.Text = "Сумма за выбранный период: 0,00 руб.";
+                return;
+            }
+
+            var filteredList = salesHistory.ToList();
+
             if (StartDatePicker.SelectedDate.HasValue)
             {
-                filteredList = filteredList.Where(s => s.RequestDate >= StartDatePicker.SelectedDate.Value).ToList();
+                DateTime startDate = StartDatePicker.SelectedDate.Value.Date;
+                filteredList = filteredList.Where(s => s.RequestDate.Date >= startDate).ToList();
             }
+
             if (EndDatePicker.SelectedDate.HasValue)
             {
-                filteredList = filteredList.Where(s => s.RequestDate <= EndDatePicker.SelectedDate.Value).ToList();
+                DateTime endDate = EndDatePicker.SelectedDate.Value.Date;
+                filteredList = filteredList.Where(s => s.RequestDate.Date <= endDate).ToList();
             }
+
             SalesLW.ItemsSource = filteredList;
+
+            decimal filteredSum = filteredList.Sum(s => s.TotalAmount);
+            FilteredTotalTb.Text = $"Сумма за выбранный период: {filteredSum:N2} руб.";
         }
 
         private void FilterBtn_Click(object sender, RoutedEventArgs e)
@@ -92,6 +120,7 @@ namespace ComfortPractice.Pages
             NavigationService.Navigate(new PartnersListPage());
         }
     }
+
     public class SaleHistoryItem
     {
         public DateTime RequestDate { get; set; }
